@@ -5,6 +5,8 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/UI%20Page/First%20Half%20Design/Authentication/sign_in.dart';
 import 'package:quiz_app/Widget/button_global.dart';
+import 'package:quiz_app/Style/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
 
   bool isButtonPressed= false;
 
@@ -85,14 +88,18 @@ class _SignUpState extends State<SignUp> {
                     }),
                 const SizedBox(height: 5,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+
                     LinkButton(image: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(FontAwesomeIcons.facebookF, color: Colors.blue, size: 34,),
                     ),
                       buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                       ),
-                    ),
+                    ).onTap((){
+                      UrlLauncher().launcheURL('www.facebook.com');
+                    }),
                     const SizedBox(width: 8,),
                     LinkButton(image: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -100,12 +107,16 @@ class _SignUpState extends State<SignUp> {
                     ),
                       buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                       ),
-                    ),
+                    ).onTap((){
+                      UrlLauncher().launcheURL('www.google.com');
+                    }),
                     const SizedBox(width: 8,),
                     LinkButton(
                       buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                       ), image: const Icon(Icons.apple, color:AppColor.darkColor, size:44 ,),
-                    ),
+                    ).onTap((){
+                      UrlLauncher().launcheURL('www.apple.com');
+                    }),
                   ],
                 ),
                 const SizedBox(height: 10,),

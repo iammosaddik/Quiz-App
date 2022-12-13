@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iconly/iconly.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/UI%20Page/First%20Half%20Design/Authentication/sign_up.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 
+import '../../../Style/url_launcher.dart';
 import 'forgot_password.dart';
 
 class SignIn extends StatefulWidget {
@@ -17,6 +17,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
 
   bool rememberMe = false;
   bool isButtonPressed= false;
@@ -90,6 +91,7 @@ class _SignInState extends State<SignIn> {
                   }),
               const SizedBox(height: 60,),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   LinkButton(image: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -97,7 +99,9 @@ class _SignInState extends State<SignIn> {
                   ),
                     buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                     ),
-                  ),
+                  ).onTap((){
+                    UrlLauncher().launcheURL('www.facebook.com');
+                  }),
                   const SizedBox(width: 8,),
                   LinkButton(image: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -105,12 +109,16 @@ class _SignInState extends State<SignIn> {
                   ),
                     buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                     ),
-                  ),
+                  ).onTap((){
+                    UrlLauncher().launcheURL('www.google.com');
+                  }),
                   const SizedBox(width: 8,),
                   LinkButton(
                     buttonDecoration: myButtonDecoration.copyWith(color: Colors.white,
                     ), image: const Icon(Icons.apple, color:AppColor.darkColor, size:44 ,),
-                  ),
+                  ).onTap((){
+                    UrlLauncher().launcheURL('www.apple.com');
+                  }),
                 ],
               ),
               const SizedBox(height: 40,),
