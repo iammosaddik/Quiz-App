@@ -83,24 +83,27 @@ class LinkButton extends StatelessWidget {
 //  OTP TextField start................
 //  OTP TextField start................
 class GetTextField extends StatelessWidget {
-  const GetTextField({
+   GetTextField({
     Key? key,
     required this.prefixIcon,
     required this.hintText,
     required this.labelText,
     required this.textFieldType,
+    required this.controller,
   }) : super(key: key);
 
   final Icon prefixIcon;
   final String hintText;
   final String labelText;
   final TextFieldType textFieldType;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: myButtonDecoration.copyWith(color: Colors.white),
       child: AppTextField(
+        controller: controller,
         textFieldType: textFieldType,
         decoration: InputDecoration(
           prefixIcon: prefixIcon,
