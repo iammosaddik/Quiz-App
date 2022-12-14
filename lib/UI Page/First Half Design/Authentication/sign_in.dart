@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/UI%20Page/First%20Half%20Design/Authentication/sign_up.dart';
+import 'package:quiz_app/UI%20Page/Second%20Half%20Design/home_page.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 
 import '../../../Style/url_launcher.dart';
@@ -81,6 +82,7 @@ class _SignInState extends State<SignIn> {
                   buttonDecoration: myButtonDecoration.copyWith(color:isButtonPressed? Colors.black: AppColor.buttonColor),
                   buttonTextColor:isButtonPressed ? Colors.white: AppColor.borderColor,
                   onPressed: (){
+                    const HomePage().launch(context,isNewTask: true);
                     setState(() {
                       if(isButtonPressed==false){
                         isButtonPressed = true;
