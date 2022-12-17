@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -6,7 +7,8 @@ import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/UI%20Page/Authentication/sign_in.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 import 'package:quiz_app/Style/url_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../Repo/auth_repo.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -39,13 +41,16 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                // lottie animation start Code...........
                 Container(
                   alignment: Alignment.center,
                   height: 200,
                   child: Lottie.asset('images/signup1.json'),
                 ),
+                // lottie animation end Code................
                 const SizedBox(height: 10,),
-                 GetTextField(
+                // AppTextField start Code ...................
+                GetTextField(
                   prefixIcon: const Icon(Icons.person,color: Colors.blue,),
                   hintText: 'First Name',
                   labelText: 'Enter Your First Name',
@@ -92,12 +97,43 @@ class _SignUpState extends State<SignUp> {
                    textFieldType: TextFieldType.PASSWORD,
                    controller: confirmPasswordController,
                 ),
+                // AppTextField end Code .....................
                 const SizedBox(height: 5,),
+                // Sign Up start code .......................
                 ButtonGlobal(
                     textButton: 'Sign Up',
                     buttonDecoration: myButtonDecoration.copyWith(color:isButtonPressed? Colors.black: Colors.white),
                     buttonTextColor:isButtonPressed ? Colors.white: AppColor.titleColor,
-                    onPressed: (){
+                    onPressed: ()
+                      async {
+                        if(emailController.text.isEmpty){
+                          toast('Please Enter Your Email');
+                        }else if(firstNameController.text.isEmpty){
+                          toast('Please Enter Your First Name');
+                        }else if(lastNameController.text.isEmpty){
+                          toast('Please Enter Your Last Name');
+                        }else if (phoneController.text.isEmpty){
+                          toast('Please Enter Your Phone Number');
+                        } else if(passwordController.text.isEmpty){
+                          toast('Please Enter Your Password');
+                        }else if(passwordController.text.length<6){
+                          toast('Should be at lest 6 digit');
+                        }else if(confirmPasswordController.text!=passwordController.text){
+                          toast('Password Don\'t Match');
+                        }else{
+                          try{
+                            EasyLoading.show(status: 'Signing Up...');
+                            bool status = await AuthRepo().signUpWithEmail(firstNameController.text, lastNameController.text, emailController.text, phoneController.text,passwordController.text,confirmPasswordController.text);
+                            if(status){
+                              EasyLoading.showSuccess('Sign Up Successful');
+                              const SignIn().launch(context,isNewTask: true);
+                            }else{
+                              EasyLoading.showError('Something went wrong please try again');
+                            }
+                          }catch(e){
+                            EasyLoading.showError(e.toString());
+                          }
+                        }
                       setState(() {
                         if(isButtonPressed==false){
                           isButtonPressed = true;
@@ -106,7 +142,9 @@ class _SignUpState extends State<SignUp> {
                         }
                       });
                     }),
+                // Sign Up end code .......................
                 const SizedBox(height: 5,),
+                // Browser Link code start ...................
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -139,7 +177,9 @@ class _SignUpState extends State<SignUp> {
                     }),
                   ],
                 ),
+                // Browser Link code end ...................
                 const SizedBox(height: 10,),
+                //bottom code start here ...........
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -147,6 +187,7 @@ class _SignUpState extends State<SignUp> {
                     const Text('LogIn Now',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue),).onTap(()=> const SignIn().launch(context,isNewTask: true)),
                   ],
                 )
+                //bottom code end here ...........
               ],
             ),
           ),

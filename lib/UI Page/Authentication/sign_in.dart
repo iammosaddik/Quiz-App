@@ -38,16 +38,15 @@ class _SignInState extends State<SignIn> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-
-              // lottie animation start Code....
+              // lottie animation start Code............
              Container(
                alignment: Alignment.center,
                height: 300,
                  child: Lottie.asset('images/login.json'),
              ),
-              // lottie animation end Code....
+              // lottie animation end Code.................
               const SizedBox(height: 20,),
-               // ApptextField start Code ......
+               // AppTextField start Code ................
                GetTextField(
                 prefixIcon: const Icon(Icons.email_outlined,color: Colors.blue,),
                 hintText: 'Email',
@@ -61,7 +60,7 @@ class _SignInState extends State<SignIn> {
                 labelText: 'Enter Your Password', textFieldType: TextFieldType.PASSWORD,
                  controller: passwordController,
               ),
-              // ApptextField end Code ......
+              // AppTextField end Code ............
               const SizedBox(height: 20,),
               // Remember me and forgot password start code ........
               Row(
@@ -93,7 +92,7 @@ class _SignInState extends State<SignIn> {
               ),
               // Remember me and forgot password end code ........
               const SizedBox(height: 30,),
-              // Sign In start code ...........
+              // Sign In start code ................
               ButtonGlobal(
                   textButton: 'Log In',
                   buttonDecoration: myButtonDecoration.copyWith(color:isButtonPressed? Colors.black: AppColor.buttonColor),
@@ -125,8 +124,9 @@ class _SignInState extends State<SignIn> {
                       }
                     });
                   }),
-              // Sign In start code ...........
+              // Sign In end code .................
               const SizedBox(height: 60,),
+              // Browser Link code start .............
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -158,7 +158,9 @@ class _SignInState extends State<SignIn> {
                   }),
                 ],
               ),
+              // Browser Link code start .............
               const SizedBox(height: 40,),
+              //bottom code start here ...........
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -166,6 +168,7 @@ class _SignInState extends State<SignIn> {
                   const Text('Sign Up Here',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue),).onTap(()=> const  SignUp().launch(context,isNewTask: Lottie.traceEnabled)),
                 ],
               )
+              //bottom code end here ...........
             ],
           ),
         ),
