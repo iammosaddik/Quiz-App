@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:quiz_app/Repo/auth_repo.dart';
 import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 
 import 'otp_verification.dart';
 
-class ForgorPassword extends StatefulWidget {
-  const ForgorPassword({Key? key}) : super(key: key);
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
-  State<ForgorPassword> createState() => _ForgorPasswordState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgorPasswordState extends State<ForgorPassword> {
+class _ForgotPasswordState extends State<ForgotPassword> {
 
   bool forgotClick= false;
 
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
 
   @override
@@ -54,8 +56,9 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                 child: GetTextField(
                   prefixIcon: Icon(Icons.email_outlined,color: Colors.blue,),
                   hintText: 'Email',
-                  labelText: 'Enter Your Email', textFieldType: TextFieldType.EMAIL,
-                  controller: passwordController,
+                  labelText: 'Enter Your Email',
+                  textFieldType: TextFieldType.EMAIL,
+                  controller: emailController,
                 ),
               ),
               const SizedBox(height: 20,),
@@ -63,8 +66,23 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                   textButton: 'Sent Code',
                   buttonDecoration: myButtonDecoration.copyWith(color: forgotClick? AppColor.buttonColor: Colors.green),
                   buttonTextColor:forgotClick? Colors.white: Colors.white,
-                  onPressed: (){
-                    const Verification().launch(context);
+                  onPressed: () async {
+                    if(emailController.text.isEmpty){
+                      toast('Please Enter Your Email Address');
+                    }else{
+                      try{
+                        EasyLoading.show(status: 'Please Wait...');
+                        bool status = await AuthRepo().forGotPassword(emailController.text);
+                        if(status){
+                          EasyLoading.showSuccess('Send Code SuccessFully');
+                          Verification().launch(context);
+                        }else{
+                          EasyLoading.showError('Please Try Again');
+                        }
+                      }catch (e){
+                        EasyLoading.showError(e.toString());
+                      }
+                    }
                     setState(() {
                       if(forgotClick==false){
                         forgotClick = true;
