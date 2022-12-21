@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pinput/pinput.dart';
+import 'package:quiz_app/Model/Otp_models.dart';
+import 'package:quiz_app/Repo/auth_repo.dart';
 import '../../../Style/app_color.dart';
 import '../../../Widget/button_global.dart';
 import 'create_new_password.dart';
@@ -16,6 +20,9 @@ class Verification extends StatefulWidget {
 class _VerificationState extends State<Verification> {
 
   bool otpClick = false;
+
+TextEditingController codeController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class _VerificationState extends State<Verification> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: EdgeInsets.only(top: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,37 +55,33 @@ class _VerificationState extends State<Verification> {
                   child: Text('Enter the verification code we just sent on your email address.', style: TextStyle(color: AppColor.darkGreyColor,fontSize: 16),textAlign: TextAlign.center,),
                 ),
                 const SizedBox(height: 20,),
-                   Padding(
-                     padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                           decoration: myButtonDecoration.copyWith(color: Colors.white),
-                            child: const OtpPage()
-                        ),
-                        Container(
-                           decoration: myButtonDecoration.copyWith(color: Colors.white),
-                            child: const OtpPage()
-                        ),
-                        Container(
-                           decoration: myButtonDecoration.copyWith(color: Colors.white),
-                            child: const OtpPage()
-                        ),
-                        Container(
-                           decoration: myButtonDecoration.copyWith(color: Colors.white),
-                            child: const OtpPage()
-                        ),
-                      ],
-                  ),
-                   ),
+                Pinput(
+                  controller: codeController,
+                  length: 6,
+                ),
+
                 const SizedBox(height: 40,),
                 ButtonGlobal(
                     textButton: ('Verify'),
                     buttonDecoration: myButtonDecoration.copyWith(color:otpClick? Colors.red: Colors.green),
                     buttonTextColor: AppColor.backgroundColor,
-                    onPressed: (){
-                      const CreateNewPassword().launch(context);
+                    onPressed: () async {
+                      if(codeController.text.isEmpty){
+                        toast('Please Enter Your Verify Code');
+                      }else{
+                        try{
+                          EasyLoading.show(status: 'Please Wait');
+                          bool status= await AuthRepo().getOtpResetCode(codeController.text);
+                          if(status){
+                            EasyLoading.showSuccess('Verify Successfully');
+                            CreateNewPassword(code: codeController.toString(),).launch(context);
+                          }else{
+                            EasyLoading.showError('Please try again');
+                          }
+                        }catch (e){
+                          EasyLoading.showError(e.toString());
+                        }
+                      }
                       setState(() {
                         if(otpClick==false){
                           otpClick = true;
@@ -115,6 +118,7 @@ class _VerificationState extends State<Verification> {
 
                   ],
                 ),
+
               ],
             ),
           ),

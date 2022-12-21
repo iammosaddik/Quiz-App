@@ -1,110 +1,66 @@
 
-
 class SignUpModel {
   SignUpModel({
-      String? status, 
+      bool? success, 
       String? message, 
-      User? user, 
-      String? accessToken, 
-      String? tokenType, 
-      String? expiresAt,}){
-    _status = status;
+      Data? data,}){
+    _success = success;
     _message = message;
-    _user = user;
-    _accessToken = accessToken;
-    _tokenType = tokenType;
-    _expiresAt = expiresAt;
+    _data = data;
 }
 
   SignUpModel.fromJson(dynamic json) {
-    _status = json['status'];
+    _success = json['success'];
     _message = json['message'];
-    _user = json['user'] != null ? User.fromJson(json['user']) : null;
-    _accessToken = json['access_token'];
-    _tokenType = json['token_type'];
-    _expiresAt = json['expires_at'];
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-  String? _status;
+  bool? _success;
   String? _message;
-  User? _user;
-  String? _accessToken;
-  String? _tokenType;
-  String? _expiresAt;
+  Data? _data;
 
-  String? get status => _status;
+  bool? get success => _success;
   String? get message => _message;
-  User? get user => _user;
-  String? get accessToken => _accessToken;
-  String? get tokenType => _tokenType;
-  String? get expiresAt => _expiresAt;
+  Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['status'] = _status;
+    map['success'] = _success;
     map['message'] = _message;
-    if (_user != null) {
-      map['user'] = _user?.toJson();
+    if (_data != null) {
+      map['data'] = _data?.toJson();
     }
-    map['access_token'] = _accessToken;
-    map['token_type'] = _tokenType;
-    map['expires_at'] = _expiresAt;
     return map;
   }
 
 }
-
-class User {
-  User({
-    String? firstName,
-    String? lastName,
-    String? phone,
-    String? email,
-    String? updatedAt,
-    String? createdAt,
-    int? id,}){
-    _firstName = firstName;
-    _lastName = lastName;
-    _phone = phone;
-    _email = email;
-    _updatedAt = updatedAt;
-    _createdAt = createdAt;
-    _id = id;
+class Data {
+  Data({
+    int? userId,
+    String? token,
+    String? tokenType,}){
+    _userId = userId;
+    _token = token;
+    _tokenType = tokenType;
   }
 
-  User.fromJson(dynamic json) {
-    _firstName = json['first_name'];
-    _lastName = json['last_name'];
-    _phone = json['phone'];
-    _email = json['email'];
-    _updatedAt = json['updated_at'];
-    _createdAt = json['created_at'];
-    _id = json['id'];
+  Data.fromJson(dynamic json) {
+    _userId = json['user_id'];
+    _token = json['token'];
+    _tokenType = json['token_type'];
   }
-  String? _firstName;
-  String? _lastName;
-  String? _phone;
-  String? _email;
-  String? _updatedAt;
-  String? _createdAt;
-  int? _id;
+  int? _userId;
+  String? _token;
+  String? _tokenType;
 
-  String? get firstName => _firstName;
-  String? get lastName => _lastName;
-  String? get phone => _phone;
-  String? get email => _email;
-  String? get updatedAt => _updatedAt;
-  String? get createdAt => _createdAt;
-  int? get id => _id;
+  int? get userId => _userId;
+  String? get token => _token;
+  String? get tokenType => _tokenType;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['first_name'] = _firstName;
-    map['last_name'] = _lastName;
-    map['phone'] = _phone;
-    map['email'] = _email;
-    map['updated_at'] = _updatedAt;
-    map['created_at'] = _createdAt;
-    map['id'] = _id;
+    map['user_id'] = _userId;
+    map['token'] = _token;
+    map['token_type'] = _tokenType;
     return map;
   }
 

@@ -9,7 +9,6 @@ import 'package:quiz_app/UI%20Page/Authentication/sign_up.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 
 import '../../../Style/url_launcher.dart';
-import '../../Test/home_page.dart';
 import 'forgot_password.dart';
 
 class SignIn extends StatefulWidget {
@@ -77,7 +76,7 @@ class _SignInState extends State<SignIn> {
                   const Text('Remember Me',style: TextStyle(color: AppColor.darkGreyColor,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
                   const Spacer(),
                   GestureDetector(
-                    onTap: ()=> const ForgorPassword().launch(context),
+                    onTap: ()=> const ForgotPassword().launch(context),
                     child: Container(
                         alignment: Alignment.centerRight,
                         child: const Text('Forgot Password?',
@@ -108,7 +107,6 @@ class _SignInState extends State<SignIn> {
                         bool status = await AuthRepo().signInWithEmail(emailController.text, passwordController.text);
                         if(status){
                           EasyLoading.showSuccess('Sign In SuccessFully');
-                          const HomePage().launch(context,isNewTask: true);
                         }else{
                           EasyLoading.showError('Invalid Email Or Password');
                         }

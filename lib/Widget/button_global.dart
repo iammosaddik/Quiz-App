@@ -138,8 +138,8 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 68,
-      height: 68,
+      width: 55,
+      height: 55,
       child: AppTextField(textFieldType: TextFieldType.NUMBER,
         onChanged: (value){
           if(value.length==1){

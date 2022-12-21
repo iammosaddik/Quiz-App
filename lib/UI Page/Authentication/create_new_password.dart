@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pinput/pinput.dart';
+import 'package:quiz_app/Repo/auth_repo.dart';
 import 'package:quiz_app/Style/app_color.dart';
 import 'package:quiz_app/UI%20Page/Authentication/sign_in.dart';
 import 'package:quiz_app/Widget/button_global.dart';
 
 class CreateNewPassword extends StatefulWidget {
-  const CreateNewPassword({Key? key}) : super(key: key);
+  const CreateNewPassword({Key? key, required this.code}) : super(key: key);
+
+ final String code;
 
   @override
   State<CreateNewPassword> createState() => _CreateNewPasswordState();
@@ -19,8 +24,10 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
 
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+   TextEditingController controller=TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController reEnterPasswordController = TextEditingController();
 
 
   @override
@@ -57,7 +64,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                   prefixIcon: Icon(Icons.lock,color: Colors.blue,),
                   hintText: 'Confirm Password',
                   labelText: 'Enter Your Confirm Password', textFieldType: TextFieldType.PASSWORD,
-                  controller: emailController,
+                  controller: confirmPasswordController,
                 ),
               ),
               const SizedBox(height: 10,),
@@ -67,7 +74,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                   prefixIcon: Icon(Icons.lock,color: Colors.blue,),
                   hintText: 'Re-Enter Password',
                   labelText: 'Re-Enter Your Password', textFieldType: TextFieldType.PASSWORD,
-                  controller: passwordController,
+                  controller: reEnterPasswordController,
                 ),
               ),
               const SizedBox(height: 20,),
@@ -75,34 +82,51 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                   textButton: 'Reset Password',
                   buttonDecoration: myButtonDecoration.copyWith(color: newPassword? AppColor.buttonColor: Colors.green),
                   buttonTextColor:newPassword? Colors.white: Colors.white,
-                  onPressed: (){
-                    showDialog(
-                        context: context,
-                        builder: (context)=> Container(
-                          alignment: Alignment.topLeft,
-                          child: AlertDialog(
-                            alignment: Alignment.topLeft,
-                            icon: Lottie.asset('images/success1.json'),
-                            title: const Text('Password Changed Successfully', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold,fontSize: 20),),
-                            actions: [
-                              ButtonGlobal(
-                                  textButton: ('Verify'),
-                                  buttonDecoration: myButtonDecoration.copyWith(color:alert? Colors.red: Colors.green),
-                                  buttonTextColor: AppColor.backgroundColor,
-                                  onPressed: (){
-                                    const SignIn().launch(context);
-                                    setState(() {
-                                      if(alert==false){
-                                        alert = true;
-                                      }else if(alert==true){
-                                        alert= false;
-                                      }
-                                    });
-                                  }),
-                            ],
-                          ),
-                        )
-                    );
+                  onPressed: () async {
+                    if(confirmPasswordController.text.isEmpty){
+                      toast('Please Enter Your Confirm Password');
+                    }else if(reEnterPasswordController.text.isEmpty){
+                      toast('Please Re-Enter Your Password');
+                    }else{
+                      try{
+                        EasyLoading.show(status: 'Password Changing....');
+                        bool status = await AuthRepo().getResetPassword(widget.code, confirmPasswordController.text, reEnterPasswordController.text);
+                        if(status){
+                          showDialog(
+                              context: context,
+                              builder: (context)=> Container(
+                                alignment: Alignment.topLeft,
+                                child: AlertDialog(
+                                  alignment: Alignment.topLeft,
+                                  icon: Lottie.asset('images/success1.json'),
+                                  title: const Text('Password Changed Successfully', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold,fontSize: 20),),
+                                  actions: [
+                                    ButtonGlobal(
+                                        textButton: ('Sign In'),
+                                        buttonDecoration: myButtonDecoration.copyWith(color:alert? Colors.red: Colors.green),
+                                        buttonTextColor: AppColor.backgroundColor,
+                                        onPressed: (){
+                                          const SignIn().launch(context);
+                                          setState(() {
+                                            if(alert==false){
+                                              alert = true;
+                                            }else if(alert==true){
+                                              alert= false;
+                                            }
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              )
+                          );
+                        }else{
+                          EasyLoading.showError('Please Try again');
+                        }
+                      }catch (e){
+                        EasyLoading.showError(e.toString());
+                      }
+                    }
+
                     setState(() {
                       if(newPassword==false){
                         newPassword = true;
@@ -118,3 +142,4 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
     );
   }
 }
+
